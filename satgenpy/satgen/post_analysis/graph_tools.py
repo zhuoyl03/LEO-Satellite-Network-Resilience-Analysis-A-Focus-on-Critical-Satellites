@@ -152,7 +152,10 @@ def get_path_with_weights(src, dst, forward_state, sat_net_graph_with_gs):
 def augment_path_with_weights(path, sat_net_graph_with_gs):
     res = []
     for i in range(1, len(path)):
-        res.append((path[i - 1], path[i], sat_net_graph_with_gs.get_edge_data(path[i - 1], path[i])["weight"]))
+        edge_data = sat_net_graph_with_gs.get_edge_data(path[i - 1], path[i])
+        if edge_data is None:
+            raise ValueError(f"Edge from {path[i - 1]} to {path[i]} does not exist in the graph.")
+        res.append((path[i - 1], path[i], edge_data["weight"]))
     return res
 
 

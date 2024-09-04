@@ -1,0 +1,60 @@
+###
+###  Released under the MIT License (MIT) --- see ../LICENSE
+###  Copyright (c) 2014 Ankit Singla, Sangeetha Abdu Jyothi, Chi-Yao Hong,
+###  Lucian Popa, P. Brighten Godfrey, Alexandra Kolla, Simon Kassing
+###
+
+#####################################
+### STYLING
+
+# Terminal (gnuplot 4.4+); Swiss neutral Helvetica font
+set terminal pdfcairo font "Helvetica, 20" linewidth 1.5 rounded dashed
+
+# Line style for axes
+set style line 80 lt rgb "#808080"
+
+# Line style for grid
+set style line 81 lt 0  # Dashed
+set style line 81 lt rgb "#999999"  # Grey grid
+
+# Grey grid and border
+set grid back linestyle 81
+set border 3 back linestyle 80
+set xtics nomirror
+set ytics nomirror
+
+# Line styles
+set style line 1 lt rgb "#2177B0" lw 4 pt 1 ps 0
+set style line 2 lt rgb "#FC7F2B" lw 4 pt 2 ps 0 dt 2
+set style line 3 lt rgb "#2F9E37" lw 4 pt 3 ps 0 dt 3
+set style line 4 lt rgb "#D42A2D" lw 2.4 pt 4 ps 1.4
+
+# Output
+set output "/home/leo/hypatia/ECE227/pdf/ecdf_max_hop_count_to_min_hop_count.pdf"
+
+#####################################
+### AXES AND KEY
+
+# Axes labels
+set xlabel "Max. hop count / Min. hop count"
+set ylabel "ECDF (pairs)"
+
+# Axes ranges
+set xrange [1:]       # Explicitly set the x-range [lower:upper]
+set yrange [0:]       # Explicitly set the y-range [lower:upper]
+
+# Rotate tick labels
+set xtics rotate by -45
+
+# Font of the key (a.k.a. legend)
+set key font ",18"
+set key reverse
+set key bottom right Left
+set key spacing 2
+
+#####################################
+### PLOTS
+set datafile separator ","
+plot    "/home/leo/hypatia/ECE227/rtt/starlink_550_isls_plus_grid_ground_stations_top_100_algorithm_free_one_only_over_isls/1000ms_for_200s/rtt/data/ecdf_pairs_max_minus_min_rtt_ns.txt" using ($1):($2) title "Baseline"  with steps ls 3, \
+        "/home/leo/hypatia/ECE227/rtt_delete_50/starlink_550_isls_plus_grid_ground_stations_top_100_algorithm_free_one_only_over_isls/1000ms_for_200s/rtt/data/ecdf_pairs_max_minus_min_rtt_ns.txt" using ($1):($2) title "50 Satellites Removed"  with steps ls 1, \
+        "/home/leo/hypatia/ECE227/rtt_delete_100/starlink_550_isls_plus_grid_ground_stations_top_100_algorithm_free_one_only_over_isls/1000ms_for_200s/rtt/data/ecdf_pairs_max_minus_min_rtt_ns.txt" using ($1):($2) title "100 Satellites Removed"  with steps ls 2
