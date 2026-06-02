@@ -1,6 +1,10 @@
 import sys
-sys.path.append(os.path.expanduser("~") + "/hypatia/satgenpy")
 import os
+from pathlib import Path
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_DIR))
+from config import SATGENPY_DIR
+sys.path.append(str(SATGENPY_DIR))
 import pickle
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -98,4 +102,3 @@ def construct_graph_random_delete(directory, usage_data_file_path, satellite_net
             pickle.dump(graph_with_distance, f)
 
         it += 1
-

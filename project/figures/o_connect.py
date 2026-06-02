@@ -3,10 +3,15 @@ import os
 import numpy as np
 from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+import sys
+from pathlib import Path
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_DIR))
+from config import LEGACY_STARLINK_SHELL_NAME, PROJECT_FIGURES_DIR, PROJECT_NETWORKS_DIR, STARLINK_DATA_NAME, analysis_window_dir
 
 # Define file paths
-output_plot_dir = '/home/leo/hypatia/ECE227/figures/scatter_plots'
-histogram_plot_dir = '/home/leo/hypatia/ECE227/figures'
+output_plot_dir = PROJECT_FIGURES_DIR / "scatter_plots"
+histogram_plot_dir = PROJECT_FIGURES_DIR
 simulation_end_time_s = 200
 dynamic_state_update_interval_ms = 1000
 
@@ -67,65 +72,66 @@ map = Basemap(projection='cyl', resolution='l',
 all_usage_counts = []
 zero_gs_usage_counts = []
 
-for t in range(0, simulation_end_time_ns, dynamic_state_update_interval_ns):
+def plot_zero_ground_station_usage_histogram():
+    for t in range(0, simulation_end_time_ns, dynamic_state_update_interval_ns):
 
-    usage_file = '/home/leo/hypatia/ECE227/satgen_analysis/starlink_550_isls_plus_grid_ground_stations_top_100_algorithm_free_one_only_over_isls/1000ms_for_200s/usage/satellite_usage_ranking/satellite_usage_ranking_at_' + str(t) + '.txt'
-    gs_file = '/home/leo/hypatia/ECE227/satellite_networks/gen_data/72_22_53_550_starlinkshell1/satellite_gs_ranking/satellite_gs_ranking_at_' + str(t) + '.txt'
-    lat_lon_file = '/home/leo/hypatia/ECE227/satellite_networks/gen_data/72_22_53_550_starlinkshell1/satellite_lat_lon/satellites_latlon_at_' + str(t) + '.txt'
-    # Ensure the output directory exists
-    if not os.path.exists(output_plot_dir):
-        os.makedirs(output_plot_dir)
+        usage_file = analysis_window_dir(STARLINK_DATA_NAME) / "usage" / "satellite_usage_ranking" / f"satellite_usage_ranking_at_{t}.txt"
+        gs_file = PROJECT_NETWORKS_DIR / LEGACY_STARLINK_SHELL_NAME / "satellite_gs_ranking" / f"satellite_gs_ranking_at_{t}.txt"
+        lat_lon_file = PROJECT_NETWORKS_DIR / LEGACY_STARLINK_SHELL_NAME / "satellite_lat_lon" / f"satellites_latlon_at_{t}.txt"
+        # Ensure the output directory exists
+        if not os.path.exists(output_plot_dir):
+            os.makedirs(output_plot_dir)
 
-    # Read the data
-    usage_data = read_usage_data(usage_file)
-    gs_data = read_gs_data(gs_file)
+        # Read the data
+        usage_data = read_usage_data(usage_file)
+        gs_data = read_gs_data(gs_file)
 
-    # Ensure we only plot satellites that exist in both datasets
-    satellites = set(usage_data.keys()).intersection(set(gs_data.keys()))
+        # Ensure we only plot satellites that exist in both datasets
+        satellites = set(usage_data.keys()).intersection(set(gs_data.keys()))
 
-    # Prepare the data for plotting
-    usage_counts = [usage_data[sat] for sat in satellites]
-    gs_counts = [gs_data[sat] for sat in satellites]
+        # Prepare the data for plotting
+        usage_counts = [usage_data[sat] for sat in satellites]
+        gs_counts = [gs_data[sat] for sat in satellites]
 
-    # Read satellite positions with land/sea classification
-    satellite_positions = read_satellite_positions(lat_lon_file, map)
+        # Read satellite positions with land/sea classification
+        satellite_positions = read_satellite_positions(lat_lon_file, map)
 
-    for sat in satellites:
-        all_usage_counts.append(usage_data[sat])
-        if gs_data[sat] == 0:
-            zero_gs_usage_counts.append(usage_data[sat])
+        for sat in satellites:
+            all_usage_counts.append(usage_data[sat])
+            if gs_data[sat] == 0:
+                zero_gs_usage_counts.append(usage_data[sat])
 
-# Plot the histogram for usage counts
-plt.figure(figsize=(10, 6))
-bins = np.linspace(min(all_usage_counts), max(all_usage_counts), 50)
-plt.hist(all_usage_counts, bins=bins, edgecolor='k', alpha=0.5, label='All Usage Counts', color='orange')
+    # Plot the histogram for usage counts
+    plt.figure(figsize=(10, 6))
+    bins = np.linspace(min(all_usage_counts), max(all_usage_counts), 50)
+    plt.hist(all_usage_counts, bins=bins, edgecolor='k', alpha=0.5, label='All Usage Counts', color='orange')
 
-# Highlight zero ground station connections
-plt.hist(zero_gs_usage_counts, bins=bins, edgecolor='k', alpha=0.5, label='Zero GS Connections', color='green')
+    # Highlight zero ground station connections
+    plt.hist(zero_gs_usage_counts, bins=bins, edgecolor='k', alpha=0.5, label='Zero GS Connections', color='green')
 
-plt.title('Histogram of Satellite Usage Counts with Zero GS Connections Highlighted')
-plt.xlabel('Usage Counts')
-plt.ylabel('Frequency')
-plt.legend(loc='upper right')
-plt.grid(True)
+    plt.title('Histogram of Satellite Usage Counts with Zero GS Connections Highlighted')
+    plt.xlabel('Usage Counts')
+    plt.ylabel('Frequency')
+    plt.legend(loc='upper right')
+    plt.grid(True)
 
-# Add inset for usage counts greater than 200
-ax_inset = inset_axes(plt.gca(), width="50%", height="50%", loc='upper right')
-filtered_all_usage_counts = [count for count in all_usage_counts if count > 200]
-filtered_zero_gs_usage_counts = [count for count in zero_gs_usage_counts if count > 200]
+    # Add inset for usage counts greater than 200
+    ax_inset = inset_axes(plt.gca(), width="50%", height="50%", loc='upper right')
+    filtered_all_usage_counts = [count for count in all_usage_counts if count > 200]
+    filtered_zero_gs_usage_counts = [count for count in zero_gs_usage_counts if count > 200]
 
-bins_inset = np.linspace(min(filtered_all_usage_counts), max(filtered_all_usage_counts), 50)
-ax_inset.hist(filtered_all_usage_counts, bins=bins_inset, edgecolor='k', alpha=0.5, label='All > 200', color='orange')
-ax_inset.hist(filtered_zero_gs_usage_counts, bins=bins_inset, edgecolor='k', alpha=0.5, label='Zero GS > 200', color='green')
-ax_inset.set_xlabel('Usage Counts')
-ax_inset.set_ylabel('Frequency')
-ax_inset.legend(loc='upper right')
-ax_inset.grid(True)
+    bins_inset = np.linspace(min(filtered_all_usage_counts), max(filtered_all_usage_counts), 50)
+    ax_inset.hist(filtered_all_usage_counts, bins=bins_inset, edgecolor='k', alpha=0.5, label='All > 200', color='orange')
+    ax_inset.hist(filtered_zero_gs_usage_counts, bins=bins_inset, edgecolor='k', alpha=0.5, label='Zero GS > 200', color='green')
+    ax_inset.set_xlabel('Usage Counts')
+    ax_inset.set_ylabel('Frequency')
+    ax_inset.legend(loc='upper right')
+    ax_inset.grid(True)
 
-# Save the histogram with inset
-histogram_file_path = os.path.join(histogram_plot_dir, 'histogram_usage_counts_with_zero_gs_highlighted.png')
-plt.savefig(histogram_file_path)
-print(f"Histogram with inset saved to {histogram_file_path}")
+    # Save the histogram with inset
+    histogram_file_path = os.path.join(histogram_plot_dir, 'histogram_usage_counts_with_zero_gs_highlighted.png')
+    plt.savefig(histogram_file_path)
+    print(f"Histogram with inset saved to {histogram_file_path}")
 
-# Optionally close the histogram plot if running in a script to free memory
-plt.close()
+    # Optionally close the histogram plot if running in a script to free memory
+    plt.close()

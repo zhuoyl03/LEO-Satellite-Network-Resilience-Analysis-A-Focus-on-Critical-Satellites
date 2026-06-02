@@ -3,7 +3,11 @@ import sys
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 import numpy as np
-sys.path.append(os.path.expanduser("~") + "/hypatia/satgenpy")
+from pathlib import Path
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_DIR))
+from config import SATGENPY_DIR
+sys.path.append(str(SATGENPY_DIR))
 import satgen
 
 def plot_satellite_positions(latlon_dir, usage_ranking_dir, output_data_dir, ground_stations_file, simulation_end_time_ns, dynamic_state_update_interval_ns):

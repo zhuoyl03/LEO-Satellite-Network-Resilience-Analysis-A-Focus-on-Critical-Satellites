@@ -1,10 +1,15 @@
 import matplotlib.pyplot as plt
 import os
 import numpy as np
+import sys
+from pathlib import Path
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_DIR))
+from config import LEGACY_STARLINK_SHELL_NAME, PROJECT_FIGURES_DIR, PROJECT_NETWORKS_DIR, STARLINK_DATA_NAME, analysis_window_dir
 
 # Define file paths
-output_plot_dir = '/home/leo/hypatia/ECE227/figures/plots'
-latlon_dir = "/home/leo/hypatia/ECE227/satellite_networks/gen_data/72_22_53_550_starlinkshell1/satellite_lat_lon"
+output_plot_dir = PROJECT_FIGURES_DIR / "plots"
+latlon_dir = PROJECT_NETWORKS_DIR / LEGACY_STARLINK_SHELL_NAME / "satellite_lat_lon"
 
 simulation_end_time_s = 200
 dynamic_state_update_interval_ms = 1000
@@ -59,51 +64,52 @@ def read_satellite_positions(file_path):
             satellite_dict[satellite_number] = (latitude, longitude)
     return satellite_dict
 
-for t in range(0, simulation_end_time_ns, dynamic_state_update_interval_ns):
+def plot_usage_vs_ground_station_ecdfs():
+    for t in range(0, simulation_end_time_ns, dynamic_state_update_interval_ns):
 
-    usage_file = '"/home/leo/hypatia/ECE227/satgen_analysis/starlink_550_isls_plus_grid_ground_stations_top_100_algorithm_free_one_only_over_isls/1000ms_for_200s/usage/satellite_usage_ranking/satellite_usage_ranking_at_' + str(t) + '.txt'
-    gs_file = '/home/leo/hypatia/ECE227/satellite_networks/gen_data/72_22_53_550_starlinkshell1/satellite_gs_ranking/satellite_gs_ranking_at_' + str(t) + '.txt'
+        usage_file = analysis_window_dir(STARLINK_DATA_NAME) / "usage" / "satellite_usage_ranking" / f"satellite_usage_ranking_at_{t}.txt"
+        gs_file = PROJECT_NETWORKS_DIR / LEGACY_STARLINK_SHELL_NAME / "satellite_gs_ranking" / f"satellite_gs_ranking_at_{t}.txt"
 
-    # Ensure the output directory exists
-    if not os.path.exists(output_plot_dir):
-        os.makedirs(output_plot_dir)
+        # Ensure the output directory exists
+        if not os.path.exists(output_plot_dir):
+            os.makedirs(output_plot_dir)
 
 
 
-    # Read the data
-    usage_data = read_usage_data(usage_file)
-    gs_data = read_gs_data(gs_file)
+        # Read the data
+        usage_data = read_usage_data(usage_file)
+        gs_data = read_gs_data(gs_file)
 
-    # Ensure we only plot satellites that exist in both datasets
-    satellites = set(usage_data.keys()).intersection(set(gs_data.keys()))
+        # Ensure we only plot satellites that exist in both datasets
+        satellites = set(usage_data.keys()).intersection(set(gs_data.keys()))
 
-    # Prepare the data for plotting
-    usage_counts = [usage_data[sat] for sat in satellites]
-    gs_counts = [gs_data[sat] for sat in satellites]
+        # Prepare the data for plotting
+        usage_counts = [usage_data[sat] for sat in satellites]
+        gs_counts = [gs_data[sat] for sat in satellites]
 
-    # Define usage bins
-    usage_bins = [(0, 200), (200, 400), (400, 600), (600, np.inf)]
-    colors = ['b', 'g', 'r', 'c']
+        # Define usage bins
+        usage_bins = [(0, 200), (200, 400), (400, 600), (600, np.inf)]
+        colors = ['b', 'g', 'r', 'c']
 
-    # Plot the ECDFs
-    plt.figure(figsize=(10, 6))
-    for i, (low, high) in enumerate(usage_bins):
-        filtered_gs_counts = [gs_data[sat] for sat in satellites if low <= usage_data[sat] < high]
-        if filtered_gs_counts:
-            filtered_gs_counts_sorted = np.sort(filtered_gs_counts)
-            ecdf_y = np.arange(1, len(filtered_gs_counts_sorted) + 1) / len(filtered_gs_counts_sorted)
-            plt.step(filtered_gs_counts_sorted, ecdf_y, label=f'Usage {low}-{high}', where='post', color=colors[i])
+        # Plot the ECDFs
+        plt.figure(figsize=(10, 6))
+        for i, (low, high) in enumerate(usage_bins):
+            filtered_gs_counts = [gs_data[sat] for sat in satellites if low <= usage_data[sat] < high]
+            if filtered_gs_counts:
+                filtered_gs_counts_sorted = np.sort(filtered_gs_counts)
+                ecdf_y = np.arange(1, len(filtered_gs_counts_sorted) + 1) / len(filtered_gs_counts_sorted)
+                plt.step(filtered_gs_counts_sorted, ecdf_y, label=f'Usage {low}-{high}', where='post', color=colors[i])
 
-    plt.title('ECDF of Ground Stations Connected for Different Usage Counts')
-    plt.xlabel('Number of Ground Stations Connected')
-    plt.ylabel('ECDF')
-    plt.legend()
-    plt.grid(True)
+        plt.title('ECDF of Ground Stations Connected for Different Usage Counts')
+        plt.xlabel('Number of Ground Stations Connected')
+        plt.ylabel('ECDF')
+        plt.legend()
+        plt.grid(True)
 
-    # Save the plot
-    plot_file_path = os.path.join(output_plot_dir, f'ecdf_gs_connected_vs_usage_count_at_{t}.png')
-    plt.savefig(plot_file_path)
-    print(f"Plot saved to {plot_file_path}")
+        # Save the plot
+        plot_file_path = os.path.join(output_plot_dir, f'ecdf_gs_connected_vs_usage_count_at_{t}.png')
+        plt.savefig(plot_file_path)
+        print(f"Plot saved to {plot_file_path}")
 
-    # Optionally close the plot if running in a script to free memory
-    plt.close()
+        # Optionally close the plot if running in a script to free memory
+        plt.close()

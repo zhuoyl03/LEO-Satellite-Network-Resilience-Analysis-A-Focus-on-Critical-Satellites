@@ -1,0 +1,39 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# OS/editor metadata
+*:Zone.Identifier
+.DS_Store
+.idea/
+.vscode/
+
+# Generated Hypatia/project data
+satellite_networks/gen_data/
+satgen_analysis/*/
+satgen_analysis/plots/
+
+# Generated figures and media
+figures/**/*.png
+figures/**/*.pdf
+figures/**/*.mp4
+figures/**/*.gif
+figures/**/*.svg
+figures/**/*.plt
+figures/**/*.csv
+figures/**/*.txt
+figures/general_ecdfs/
+figures/pdf/
+figures/scatter_plots/
+figures/ecdf_gs_connected_vs_usage_count/
+
+# Keep plotting/source code under figures tracked
+!figures/**/*.py
+
+# Local experiment scratch files
+*.log
+*.tmp
+*.bak
+sat_usage.txt
+important_node_delete_weighted.txt

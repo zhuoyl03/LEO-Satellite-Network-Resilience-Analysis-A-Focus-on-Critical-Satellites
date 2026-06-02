@@ -3,11 +3,19 @@ import os
 import pickle
 import networkx as nx
 import numpy as np
-sys.path.append(os.path.expanduser("~") + "/hypatia/satgenpy")
+from pathlib import Path
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_DIR))
+from config import SATGENPY_DIR
+sys.path.append(str(SATGENPY_DIR))
 import satgen
 import exputil
 
 def gen_path(graph_directory, simulation_end_time_ns, dynamic_state_update_interval_ns, output_data_dir, satellite_count, ground_station_count, satellite_network_dir, output_path_dir):
+    """Generate shortest paths and satellite usage rankings for each time step.
+
+    output_path_dir is a directory; this function writes all_paths.pkl inside it.
+    """
 
     # Ensure the output directories exist
     if not os.path.exists(output_path_dir):

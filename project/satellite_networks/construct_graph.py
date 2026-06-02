@@ -1,6 +1,10 @@
 import sys
-sys.path.append(os.path.expanduser("~") + "/hypatia/satgenpy")
 import os
+from pathlib import Path
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_DIR))
+from config import SATGENPY_DIR
+sys.path.append(str(SATGENPY_DIR))
 import pickle
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -144,4 +148,3 @@ def construct_graph(directory, usage_data_file_path, satellite_network_dir, dele
 # plt.title("Graph Visualization with Matplotlib")
 # plt.savefig('./myplot.svg')  # Saves the plot as a PNG file
 # plt.close()  # Closes the plotting window
-

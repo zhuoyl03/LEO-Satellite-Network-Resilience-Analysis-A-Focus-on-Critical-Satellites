@@ -2,7 +2,11 @@ import ephem
 import os
 import sys
 from datetime import datetime, timedelta
-sys.path.append(os.path.expanduser("~") + "/hypatia/satgenpy")
+from pathlib import Path
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_DIR))
+from config import SATGENPY_DIR
+sys.path.append(str(SATGENPY_DIR))
 import satgen
 import exputil
 

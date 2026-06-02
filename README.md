@@ -42,6 +42,12 @@ It consists of four main components:
   
 (there is a fifth folder called `integration_tests` which is used for integration testing purposes)
 
+## Project Extension
+
+This fork includes a research extension in `project/` for LEO satellite resilience analysis. The extension studies critical satellite deletion by constructing graph snapshots, recomputing ground-station paths, and analyzing RTT/connectivity degradation.
+
+See `project/README.md` for the project-specific entry point, smoke test, output layout, and data policy. Large generated artifacts under `project/satellite_networks/gen_data/`, `project/satgen_analysis/`, and generated figures/videos are intentionally ignored by git.
+
 This is the code repository introduced and used in "Exploring the “Internet from space” with Hypatia" 
 by Simon Kassing*, Debopam Bhattacherjee*, André Baptista Águas, Jens Eirik Saethre and Ankit Singla
 (*equal contribution), which is published in the Internet Measurement Conference (IMC) 2020.

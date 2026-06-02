@@ -1,7 +1,11 @@
 import sys
-sys.path.append(os.path.expanduser("~") + "/hypatia/satgenpy")
-import satgen
 import os
+from pathlib import Path
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_DIR))
+from config import SATGENPY_DIR
+sys.path.append(str(SATGENPY_DIR))
+import satgen
 import exputil
 import numpy as np
 from statsmodels.distributions.empirical_distribution import ECDF
@@ -22,6 +26,10 @@ def save_list_to_csv(filename, data):
             writer.writerow([value])
 
 def analyze_rtt_with_graph(simulation_end_time_ns, dynamic_state_update_interval_ns, satellite_network_dir, satgenpy_dir_with_ending_slash, output_data_dir, output_name, paths_file, graph_directory, geodesic_ecdf_plot_cutoff_km):
+    satellite_network_dir = str(satellite_network_dir)
+    output_data_dir = str(output_data_dir)
+    paths_file = str(paths_file)
+    graph_directory = str(graph_directory)
         
     # Ensure the output directory exists
     if not os.path.exists(output_data_dir):
@@ -64,7 +72,7 @@ def analyze_rtt_with_graph(simulation_end_time_ns, dynamic_state_update_interval
     unreachable_per_pair = np.zeros((len(ground_stations), len(ground_stations)))
     unreachable_200ms_count = 0
     unreachable_per_second = []
-    ground_station_nodes = set(range(1584, 1684))
+    ground_station_nodes = set(range(len(satellites), len(satellites) + len(ground_stations)))
 
     # Load all paths
     with open(paths_file, 'rb') as f:
