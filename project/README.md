@@ -1,6 +1,29 @@
 # LEO Satellite Resilience Analysis
 
-This directory contains the project code for analyzing critical satellites in LEO networks using Hypatia-generated network states. The current codebase focuses on the original resilience pipeline: construct graph snapshots, remove high-usage satellites, recompute paths, and analyze RTT/connectivity degradation.
+This directory contains the author's research extension on top of Hypatia. It
+studies how LEO satellite networks degrade when critical satellites are removed.
+
+The current implementation focuses on a reproducible baseline pipeline:
+
+1. load Hypatia-generated satellite network states;
+2. construct graph snapshots over time;
+3. identify and remove high-impact satellites;
+4. recompute ground-station paths after removal;
+5. analyze RTT, path changes, satellite usage, and connectivity loss.
+
+This is the part of the repository that contains the new project code. The
+upstream Hypatia framework remains in the top-level folders such as `satgenpy/`,
+`ns3-sat-sim/`, `satviz/`, and `paper/`.
+
+## What Was Added
+
+- A single project entry point: `satellites_analysis.py`.
+- Centralized relative path configuration: `config.py`.
+- Cleaned graph/path/deletion/RTT analysis helpers under `satellite_networks/`
+  and `satgen_analysis/`.
+- Plotting scripts under `figures/`.
+- A small smoke-test mode for checking graph, path, and RTT connectivity without
+  running the full experiment.
 
 ## Structure
 

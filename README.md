@@ -1,5 +1,33 @@
 # Hypatia
 
+## Research Extension in This Fork
+
+This repository is a fork of Hypatia with an added research project under
+`project/`. The extension analyzes LEO satellite network resilience by:
+
+* building time-varying satellite/ground-station graph snapshots;
+* deleting high-impact satellites and recomputing reachable paths;
+* measuring RTT, path changes, and connectivity degradation after deletion;
+* providing a cleaned project entry point and configuration layer.
+
+Start here if you are looking for the author's added work:
+
+* project code and instructions: [`project/README.md`](project/README.md)
+* main entry point: [`project/satellites_analysis.py`](project/satellites_analysis.py)
+* centralized paths/configuration: [`project/config.py`](project/config.py)
+
+Quick smoke test:
+
+```bash
+conda run -n hypatia python project/satellites_analysis.py --smoke --deletion_counts 50
+```
+
+Generated graph/path/RTT data and figures are intentionally not committed to git
+because they are large. See [`project/README.md`](project/README.md) for the
+expected output layout and data policy.
+
+## Original Hypatia Framework
+
 Hypatia is a low earth orbit (LEO) satellite network simulation framework. It pre-calculates network state over time, enables packet-level simulations using ns-3 and provides visualizations to aid understanding.
 
 <a href="#"><img alt="Kuiper side-view" src="https://raw.githubusercontent.com/leosatsim/leosatsim.github.io/master/images/Kuiper_side_view.png" width="20%" /></a>
@@ -41,12 +69,6 @@ It consists of four main components:
   (license: MIT)
   
 (there is a fifth folder called `integration_tests` which is used for integration testing purposes)
-
-## Project Extension
-
-This fork includes a research extension in `project/` for LEO satellite resilience analysis. The extension studies critical satellite deletion by constructing graph snapshots, recomputing ground-station paths, and analyzing RTT/connectivity degradation.
-
-See `project/README.md` for the project-specific entry point, smoke test, output layout, and data policy. Large generated artifacts under `project/satellite_networks/gen_data/`, `project/satgen_analysis/`, and generated figures/videos are intentionally ignored by git.
 
 This is the code repository introduced and used in "Exploring the “Internet from space” with Hypatia" 
 by Simon Kassing*, Debopam Bhattacherjee*, André Baptista Águas, Jens Eirik Saethre and Ankit Singla
