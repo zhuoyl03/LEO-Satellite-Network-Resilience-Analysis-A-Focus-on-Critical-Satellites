@@ -1,3 +1,38 @@
-.idea
-*.pyc
+# Editor/local state
+.idea/
+.vscode/
+.DS_Store
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Windows alternate data stream metadata
+*:Zone.Identifier
+
+# Local development scratch
 dev_testing/
+*.log
+*.tmp
+*.bak
+
+# Project extension generated data and media
+project/satellite_networks/gen_data/
+project/satgen_analysis/*/
+project/satgen_analysis/plots/
+project/figures/**/*.png
+project/figures/**/*.pdf
+project/figures/**/*.mp4
+project/figures/**/*.gif
+project/figures/**/*.svg
+project/figures/**/*.plt
+project/figures/**/*.csv
+project/figures/**/*.txt
+project/figures/general_ecdfs/
+project/figures/pdf/
+project/figures/scatter_plots/
+project/figures/ecdf_gs_connected_vs_usage_count/
+
+# Keep project plotting/source code tracked
+!project/figures/**/*.py
