@@ -1,14 +1,22 @@
 # Hypatia
 
-## Research Extension in This Fork
+## Author's Research Extension
 
-This repository is a fork of Hypatia with an added research project under
-`project/`. The extension analyzes LEO satellite network resilience by:
+This fork contains the author's independent research extension under
+[`project/`](project/). This extension is not part of the original Hypatia IMC
+2020 paper. The original Hypatia framework and its citation are kept below for
+attribution.
+
+The added project analyzes LEO satellite network resilience by:
 
 * building time-varying satellite/ground-station graph snapshots;
 * deleting high-impact satellites and recomputing reachable paths;
 * measuring RTT, path changes, and connectivity degradation after deletion;
 * providing a cleaned project entry point and configuration layer.
+
+Publication status for this extension: not specified in this repository yet.
+When the related paper is published, add the paper title, venue, and citation
+here.
 
 Start here if you are looking for the author's added work:
 
@@ -70,7 +78,7 @@ It consists of four main components:
   
 (there is a fifth folder called `integration_tests` which is used for integration testing purposes)
 
-This is the code repository introduced and used in "Exploring the “Internet from space” with Hypatia" 
+The original Hypatia code repository was introduced and used in "Exploring the “Internet from space” with Hypatia" 
 by Simon Kassing*, Debopam Bhattacherjee*, André Baptista Águas, Jens Eirik Saethre and Ankit Singla
 (*equal contribution), which is published in the Internet Measurement Conference (IMC) 2020.
 

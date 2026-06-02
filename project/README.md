@@ -2,6 +2,9 @@
 
 This directory contains the author's research extension on top of Hypatia. It
 studies how LEO satellite networks degrade when critical satellites are removed.
+This extension is independent project code and is not part of the original
+Hypatia IMC 2020 paper. Publication information for the extension has not been
+specified in this repository yet.
 
 The current implementation focuses on a reproducible baseline pipeline:
 
