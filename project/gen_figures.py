@@ -1,7 +1,7 @@
-from figures.plots_with_scaling import plot_satellite_positions
-from figures.plots_with_scaling_delete import plot_satellite_usage
+from result.plot_scripts.plots_with_scaling import plot_satellite_positions
+from result.plot_scripts.plots_with_scaling_delete import plot_satellite_usage
 import os
-from config import DEFAULT_GROUND_STATIONS_FILE, KUIPER_DATA_NAME, PROJECT_FIGURES_DIR, PROJECT_NETWORKS_DIR, analysis_window_dir
+from config import DEFAULT_GROUND_STATIONS_FILE, KUIPER_DATA_NAME, PROJECT_RESULT_GENERATED_DIR, PROJECT_NETWORKS_DIR, analysis_window_dir
 
 # Satellite network data configuration
 satellite_data_name = KUIPER_DATA_NAME
@@ -24,7 +24,7 @@ usage_data_dir = analysis_window_dir(satellite_data_name) / "satellite_usage_ran
 total_usage_data_file_path = os.path.join(usage_data_dir, "total_satellite_usage_ranking.txt")
 
 # Directory for plotting satellite positions
-plots_with_scaling_output_dir = PROJECT_FIGURES_DIR / satellite_data_name / "usage_plots_with_scaling"
+plots_with_scaling_output_dir = PROJECT_RESULT_GENERATED_DIR / satellite_data_name / "usage_plots_with_scaling"
 
 def generate_figures():
     # Plot satellite positions using scaling
@@ -44,7 +44,7 @@ def generate_figures():
         last_usage_dir = analysis_window_dir(satellite_data_name) / "satellite_usage_ranking" / last_deletion_label
     
         # Output directory for plots with scaling for each deletion scenario
-        plots_with_scaling_delete_output_dir = PROJECT_FIGURES_DIR / satellite_data_name / f"usage_plots_with_scaling_{deletion_label}"
+        plots_with_scaling_delete_output_dir = PROJECT_RESULT_GENERATED_DIR / satellite_data_name / f"usage_plots_with_scaling_{deletion_label}"
     
         # Plot satellite usage considering deletions
         plot_satellite_usage(

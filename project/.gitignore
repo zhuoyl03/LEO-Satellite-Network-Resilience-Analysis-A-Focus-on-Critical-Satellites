@@ -15,21 +15,7 @@ satgen_analysis/*/
 satgen_analysis/plots/
 
 # Generated figures and media
-figures/**/*.png
-figures/**/*.pdf
-figures/**/*.mp4
-figures/**/*.gif
-figures/**/*.svg
-figures/**/*.plt
-figures/**/*.csv
-figures/**/*.txt
-figures/general_ecdfs/
-figures/pdf/
-figures/scatter_plots/
-figures/ecdf_gs_connected_vs_usage_count/
-
-# Keep plotting/source code under figures tracked
-!figures/**/*.py
+result/generated/
 
 # Local experiment scratch files
 *.log

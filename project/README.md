@@ -30,7 +30,8 @@ upstream Hypatia framework remains in the top-level folders such as `satgenpy/`,
 - Centralized relative path configuration: `config.py`.
 - Cleaned graph/path/deletion/RTT analysis helpers under `satellite_networks/`
   and `satgen_analysis/`.
-- Plotting scripts under `figures/`.
+- Plotting scripts under `result/plot_scripts/`.
+- Generated local plots/videos under `result/generated/`.
 - A small smoke-test mode for checking graph, path, and RTT connectivity without
   running the full experiment.
 
@@ -40,7 +41,8 @@ upstream Hypatia framework remains in the top-level folders such as `satgenpy/`,
 - `config.py` centralizes relative paths and dataset names.
 - `satellite_networks/` contains graph construction, path generation, deletion, and satellite/ground-station analysis helpers.
 - `satgen_analysis/` contains RTT, path-change, and usage analysis helpers.
-- `figures/` contains plotting scripts.
+- `result/plot_scripts/` contains plotting scripts.
+- `result/generated/` is the local output directory for generated plots and videos.
 
 Generated graph data, paths, analysis outputs, plots, and videos are intentionally ignored by git because they can be large.
 
@@ -96,7 +98,7 @@ The following are not committed to git:
 
 - `satellite_networks/gen_data/`
 - `satgen_analysis/<dataset>/`
-- generated plots, PDFs, videos, and intermediate files under `figures/`
+- generated plots, PDFs, videos, and intermediate files under `result/generated/`
 
 If another machine needs to reproduce results, regenerate these outputs from Hypatia or transfer the generated data separately.
 
