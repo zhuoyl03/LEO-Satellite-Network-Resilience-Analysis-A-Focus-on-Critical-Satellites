@@ -14,9 +14,28 @@ The added project analyzes LEO satellite network resilience by:
 * measuring RTT, path changes, and connectivity degradation after deletion;
 * providing a cleaned project entry point and configuration layer.
 
-Publication status for this extension: not specified in this repository yet.
-When the related paper is published, add the paper title, venue, and citation
-here.
+This extension supports the following paper:
+
+> Zhuoyuan Li, Wenyi Morty Zhang, Wenhao Chen, Yiyan Hu, and Weyl Lu.
+> **LEO Satellite Network Resilience Analysis: A Focus on Critical Satellites.**
+> In *Proceedings of the 2nd International Workshop on LEO Networking and
+> Communication (LEO-NET '24)*, pages 13-18, 2024.
+> DOI: [10.1145/3697253.3697267](https://doi.org/10.1145/3697253.3697267)
+> / [ACM PDF](https://dl.acm.org/doi/pdf/10.1145/3697253.3697267)
+
+If you use this project extension, please cite:
+
+```bibtex
+@inproceedings{li2024leo_resilience,
+  author = {Li, Zhuoyuan and Zhang, Wenyi Morty and Chen, Wenhao and Hu, Yiyan and Lu, Weyl},
+  title = {{LEO Satellite Network Resilience Analysis: A Focus on Critical Satellites}},
+  booktitle = {{Proceedings of the 2nd International Workshop on LEO Networking and Communication}},
+  series = {{LEO-NET '24}},
+  pages = {13--18},
+  year = {2024},
+  doi = {10.1145/3697253.3697267}
+}
+```
 
 Start here if you are looking for the author's added work:
 

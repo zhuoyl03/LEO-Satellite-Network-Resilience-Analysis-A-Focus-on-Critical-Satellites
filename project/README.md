@@ -3,8 +3,14 @@
 This directory contains the author's research extension on top of Hypatia. It
 studies how LEO satellite networks degrade when critical satellites are removed.
 This extension is independent project code and is not part of the original
-Hypatia IMC 2020 paper. Publication information for the extension has not been
-specified in this repository yet.
+Hypatia IMC 2020 paper.
+
+This code supports:
+
+> Zhuoyuan Li, Wenyi Morty Zhang, Wenhao Chen, Yiyan Hu, and Weyl Lu.
+> **LEO Satellite Network Resilience Analysis: A Focus on Critical Satellites.**
+> LEO-NET 2024, pages 13-18.
+> DOI: [10.1145/3697253.3697267](https://doi.org/10.1145/3697253.3697267)
 
 The current implementation focuses on a reproducible baseline pipeline:
 
