@@ -1,0 +1,1 @@
+Number of ground station pairs unreachable for 200ms: 1135
