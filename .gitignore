@@ -20,5 +20,9 @@ dev_testing/
 # Project extension generated data and media
 project/satellite_networks/gen_data/
 project/satgen_analysis/*/
+!project/satgen_analysis/risk_displacement/
+!project/satgen_analysis/risk_displacement/**
+project/satgen_analysis/risk_displacement/__pycache__/
 project/satgen_analysis/plots/
 project/result/generated/
+project/outputs/

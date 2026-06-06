@@ -12,7 +12,7 @@ This code supports:
 > LEO-NET 2024, pages 13-18.
 > DOI: [10.1145/3697253.3697267](https://doi.org/10.1145/3697253.3697267)
 
-The current implementation focuses on a reproducible baseline pipeline:
+The current implementation keeps the reproducible baseline pipeline:
 
 1. load Hypatia-generated satellite network states;
 2. construct graph snapshots over time;
@@ -34,6 +34,8 @@ upstream Hypatia framework remains in the top-level folders such as `satgenpy/`,
 - Generated local plots/videos under `result/generated/`.
 - A small smoke-test mode for checking graph, path, and RTT connectivity without
   running the full experiment.
+- A first-step risk displacement analysis layer under
+  `satgen_analysis/risk_displacement/`.
 
 ## Structure
 
@@ -41,6 +43,9 @@ upstream Hypatia framework remains in the top-level folders such as `satgenpy/`,
 - `config.py` centralizes relative paths and dataset names.
 - `satellite_networks/` contains graph construction, path generation, deletion, and satellite/ground-station analysis helpers.
 - `satgen_analysis/` contains RTT, path-change, and usage analysis helpers.
+- `satgen_analysis/risk_displacement/` contains traffic scenarios, routing
+  policy assumptions, demand-coupled link stress, and lightweight latency
+  metrics.
 - `result/plot_scripts/` contains plotting scripts.
 - `result/generated/` is the local output directory for generated plots and videos.
 
@@ -92,12 +97,54 @@ conda run -n hypatia python project/satellites_analysis.py \
   --deletion_counts 50
 ```
 
+## Risk Displacement First Step
+
+The first-step risk displacement layer keeps the fixed top-100 population-city
+ground stations and varies only the traffic matrix. It routes those offered-load
+flows through an existing representative graph snapshot, computes demand-coupled
+edge load and link stress, and reports lightweight propagation and
+congestion-adjusted latency metrics.
+
+It intentionally does not implement ML, RL, GNNs, ns-3 validation, real
+Starlink/Kuiper traffic, or critical satellite removal impact.
+
+Run from the repository root:
+
+```bash
+conda run -n hypatia python run_risk_displacement_first_step.py \
+  --traffic_models random_permutation_equal population_weighted gravity_model regional_hotspot \
+  --num_seeds 3 \
+  --num_pairs 50 \
+  --reciprocal \
+  --routing_policies shortest_path stress_aware_two_pass k_shortest_load_balancing \
+  --link_capacity 10.0 \
+  --alpha 2.0 \
+  --beta 0.5 \
+  --k_paths 3
+```
+
+Outputs are written under:
+
+```text
+project/outputs/risk_displacement/
+```
+
+Key files:
+
+- `flows_by_scenario.csv`
+- `traffic_scenario_manifest.json`
+- `per_policy_scenario_metrics.csv`
+- `path_summary_by_policy.csv`
+- `link_stress_by_policy.csv`
+- `first_step_manifest.json`
+
 ## Data Policy
 
 The following are not committed to git:
 
 - `satellite_networks/gen_data/`
 - `satgen_analysis/<dataset>/`
+- `outputs/`
 - generated plots, PDFs, videos, and intermediate files under `result/generated/`
 
 If another machine needs to reproduce results, regenerate these outputs from Hypatia or transfer the generated data separately.

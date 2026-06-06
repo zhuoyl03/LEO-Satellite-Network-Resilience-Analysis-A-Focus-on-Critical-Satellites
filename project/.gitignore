@@ -12,7 +12,11 @@ __pycache__/
 # Generated Hypatia/project data
 satellite_networks/gen_data/
 satgen_analysis/*/
+!satgen_analysis/risk_displacement/
+!satgen_analysis/risk_displacement/**
+satgen_analysis/risk_displacement/__pycache__/
 satgen_analysis/plots/
+outputs/
 
 # Generated figures and media
 result/generated/
