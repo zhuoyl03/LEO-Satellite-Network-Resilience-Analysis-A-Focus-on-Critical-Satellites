@@ -46,6 +46,8 @@ upstream Hypatia framework remains in the top-level folders such as `satgenpy/`,
 - `satgen_analysis/risk_displacement/` contains traffic scenarios, routing
   policy assumptions, demand-coupled link stress, and lightweight latency
   metrics.
+- `CODE_LOGIC.zh.md` records important project logic in Chinese and should be
+  updated when new experimental logic is added.
 - `result/plot_scripts/` contains plotting scripts.
 - `result/generated/` is the local output directory for generated plots and videos.
 
