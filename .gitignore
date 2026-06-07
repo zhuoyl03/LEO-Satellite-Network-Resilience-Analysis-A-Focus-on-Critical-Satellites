@@ -28,3 +28,6 @@ project/outputs/
 
 # Local external datasets
 ne_10m_populated_places_simple/
+
+# Separate sibling repository
+risk_displacement/
