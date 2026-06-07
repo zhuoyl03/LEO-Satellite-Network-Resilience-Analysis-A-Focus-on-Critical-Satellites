@@ -34,8 +34,6 @@ upstream Hypatia framework remains in the top-level folders such as `satgenpy/`,
 - Generated local plots/videos under `result/generated/`.
 - A small smoke-test mode for checking graph, path, and RTT connectivity without
   running the full experiment.
-- A first-step risk displacement analysis layer under
-  `satgen_analysis/risk_displacement/`.
 
 ## Structure
 
@@ -43,11 +41,6 @@ upstream Hypatia framework remains in the top-level folders such as `satgenpy/`,
 - `config.py` centralizes relative paths and dataset names.
 - `satellite_networks/` contains graph construction, path generation, deletion, and satellite/ground-station analysis helpers.
 - `satgen_analysis/` contains RTT, path-change, and usage analysis helpers.
-- `satgen_analysis/risk_displacement/` contains traffic scenarios, routing
-  policy assumptions, demand-coupled link stress, and lightweight latency
-  metrics.
-- `CODE_LOGIC.zh.md` records important project logic in Chinese and should be
-  updated when new experimental logic is added.
 - `result/plot_scripts/` contains plotting scripts.
 - `result/generated/` is the local output directory for generated plots and videos.
 
@@ -55,18 +48,30 @@ Generated graph data, paths, analysis outputs, plots, and videos are intentional
 
 ## Environment
 
-This project expects the Hypatia repository to be available one directory above this folder and a working `hypatia` conda environment:
+This project is intended to run from the top-level Hypatia repository. An
+`environment.yml` is provided at the repository root as a reproducible starting
+point for the Python analysis environment:
 
 ```bash
-conda activate hypatia
 cd /home/leo/hypatia
+conda env create -f environment.yml
+conda activate hypatia-project
 ```
 
-The Hypatia build and tests were verified with:
+Then use the repository-level Hypatia setup scripts for system dependencies,
+build steps, and tests:
 
 ```bash
-conda run -n hypatia bash hypatia_build.sh
-conda run -n hypatia bash hypatia_run_tests.sh
+bash hypatia_install_dependencies.sh
+bash hypatia_build.sh
+bash hypatia_run_tests.sh
+```
+
+The same commands can also be run through conda:
+
+```bash
+conda run -n hypatia-project bash hypatia_build.sh
+conda run -n hypatia-project bash hypatia_run_tests.sh
 ```
 
 ## Smoke Test
@@ -74,7 +79,7 @@ conda run -n hypatia bash hypatia_run_tests.sh
 Use the smoke test to verify the graph -> path -> RTT analysis chain on a 2-second slice of existing local generated data:
 
 ```bash
-conda run -n hypatia python project/satellites_analysis.py --smoke --deletion_counts 50
+conda run -n hypatia-project python project/satellites_analysis.py --smoke --deletion_counts 50
 ```
 
 Expected outputs are written under:
@@ -88,57 +93,16 @@ project/satgen_analysis/<dataset>/1000ms_for_2s/rtt_delete_50/
 The full default pipeline runs the configured deletion scenarios over the default 200-second window:
 
 ```bash
-conda run -n hypatia python project/satellites_analysis.py
+conda run -n hypatia-project python project/satellites_analysis.py
 ```
 
 You can override the time window and deletion counts:
 
 ```bash
-conda run -n hypatia python project/satellites_analysis.py \
+conda run -n hypatia-project python project/satellites_analysis.py \
   --simulation_end_time_seconds 2 \
   --deletion_counts 50
 ```
-
-## Risk Displacement First Step
-
-The first-step risk displacement layer keeps the fixed top-100 population-city
-ground stations and varies only the traffic matrix. It routes those offered-load
-flows through an existing representative graph snapshot, computes demand-coupled
-edge load and link stress, and reports lightweight propagation and
-congestion-adjusted latency metrics.
-
-It intentionally does not implement ML, RL, GNNs, ns-3 validation, real
-Starlink/Kuiper traffic, or critical satellite removal impact.
-
-Run from the repository root:
-
-```bash
-conda run -n hypatia python run_risk_displacement_first_step.py \
-  --traffic_models random_permutation_equal population_weighted gravity_model regional_hotspot \
-  --num_seeds 3 \
-  --num_pairs 50 \
-  --reciprocal \
-  --routing_policies shortest_path stress_aware_two_pass k_shortest_load_balancing \
-  --link_capacity 10.0 \
-  --alpha 2.0 \
-  --beta 0.5 \
-  --k_paths 3
-```
-
-Outputs are written under:
-
-```text
-project/outputs/risk_displacement/
-```
-
-Key files:
-
-- `flows_by_scenario.csv`
-- `traffic_scenario_manifest.json`
-- `per_policy_scenario_metrics.csv`
-- `path_summary_by_policy.csv`
-- `link_stress_by_policy.csv`
-- `first_step_manifest.json`
 
 ## Data Policy
 
