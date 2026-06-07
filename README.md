@@ -41,13 +41,12 @@ Start here if you are looking for the author's added work:
 
 * project code and instructions: [`project/README.md`](project/README.md)
 * main entry point: [`project/satellites_analysis.py`](project/satellites_analysis.py)
-* risk displacement first-step CLI: [`run_risk_displacement_first_step.py`](run_risk_displacement_first_step.py)
 * centralized paths/configuration: [`project/config.py`](project/config.py)
 
 Quick smoke test:
 
 ```bash
-conda run -n hypatia python project/satellites_analysis.py --smoke --deletion_counts 50
+conda run -n hypatia-project python project/satellites_analysis.py --smoke --deletion_counts 50
 ```
 
 Generated graph/path/RTT data and figures are intentionally not committed to git
